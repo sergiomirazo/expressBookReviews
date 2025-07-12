@@ -37,13 +37,13 @@ $filteredBooks | ConvertTo-Json -Compress
 
 ## Filtrar por título
 
-# Obtén el catálogo completo
+### Obtén el catálogo completo
 $response = Invoke-RestMethod -Uri "http://localhost:5000/" -Method Get
 
 # Filtrar libros por título
 $title = "Things Fall Apart"  
 
-# Busca los libros cuyo título coincida
+### Busca los libros cuyo título coincida
 $filteredBooks = @()
 
 foreach ($key in $response.PSObject.Properties.Name) {
@@ -53,5 +53,24 @@ foreach ($key in $response.PSObject.Properties.Name) {
     }
 }
 
-# Muestra los libros filtrados
+### Muestra los libros filtrados
 $filteredBooks | ConvertTo-Json -Compress
+
+## Obtener los reviews
+
+$response = Invoke-RestMethod -Uri "http://localhost:5000/review/1" -Method Get
+$response | ConvertTo-Json -Compress
+
+## Verificar el CRUD para el registro de usuarios
+
+### Datos del usuario a registrar
+$userData = @{
+    username = "newuser1"
+    password = "password1"
+}
+
+### Realizar la solicitud POST
+$response = Invoke-RestMethod -Uri "http://localhost:5000/register" -Method Post -Body ($userData | ConvertTo-Json) -ContentType "application/json"
+
+### Mostrar la respuesta
+$response | ConvertTo-Json -Compress
