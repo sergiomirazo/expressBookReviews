@@ -74,3 +74,27 @@ $response = Invoke-RestMethod -Uri "http://localhost:5000/register" -Method Post
 
 ### Mostrar la respuesta
 $response | ConvertTo-Json -Compress
+
+### Hacer login:
+
+$response = Invoke-RestMethod -Uri "http://localhost:5000/customer/login" -Method Post -Body ($loginData | ConvertTo-Json) -ContentType "application/json"
+
+## Crear reseña
+
+### Datos de la reseña
+$reviewData = @{
+    review = "This is a great book!"
+}
+
+$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VzZXIxIiwiaWF0IjoxNzUyMjkzNzQ1LCJleHAiOjE3NTIyOTczNDV9.lHB_SSOjWXSPhsf4lulyfs0jlJbblatFT01HT2_ovfc"
+
+### Asume que ya tienes el token del login anterior
+$headers = @{
+    Authorization = "Bearer $token"
+}
+
+### Realizar la solicitud PUT para añadir/modificar la reseña
+$response = Invoke-RestMethod -Uri "http://localhost:5000/customer/auth/review/1" -Method Put -Body ($reviewData | ConvertTo-Json) -ContentType "application/json" -Headers $headers
+
+### Mostrar la respuesta
+$response | ConvertTo-Json -Compress
